@@ -4,4 +4,4 @@ COPY setup.py ./
 RUN pip install -e .
 COPY . .
 EXPOSE 8080
-CMD [ "waitress-serve", "app:app" ]
+CMD [ "gunicorn", "app:app" ]

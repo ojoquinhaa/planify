@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify, send_file
 from pandas import read_excel, ExcelWriter
 from os import getcwd
 from json import loads
-from waitress import serve
 app = Flask(__name__) # Criando aplicação
 @app.route("/clients", methods=["GET","PUT"]) # Rota /clients
 def clients(): # Função de controlador das rotas do cliente
@@ -44,5 +43,3 @@ def dowload(): # Função para fazer o dowload do arquivo exel
         exelData.to_excel(writer, index=False)
     # Enviando o arquivo Excel para o cliente
     return send_file(filename, as_attachment=True)
-if __name__ == "__main__":
-    serve(app, '0.0.0.0', port=8080) # Rodando o servidor 

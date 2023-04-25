@@ -10,6 +10,6 @@ setup(
         'pandas',
         'openpyxl',
         'python-dotenv',
-        'waitress'
+        'gunicorn'
     ],
 )
