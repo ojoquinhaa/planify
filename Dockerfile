@@ -4,4 +4,4 @@ COPY setup.py ./
 RUN pip install -e .
 COPY . .
 EXPOSE 8080
-CMD [ "gunicorn", "app:app" ]
+CMD [ "gunicorn", "app:app", "-b", "0.0.0.0:$PORT" ]
