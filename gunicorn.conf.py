@@ -1,2 +1,1 @@
-from env import PORT
-bind=f'0.0.0.0:{PORT}'
+bind='0.0.0.0:9500'
