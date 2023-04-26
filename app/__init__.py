@@ -15,7 +15,7 @@ def clients(): # Função de controlador das rotas do cliente
             return jsonify({"error":"Erro ao tentar acessar a planilha de dados."}) # retornando erro
         if args.get("geral_numeroregistro"): # Se tiver uma query com numero de registro 
             register = args.get("geral_numeroregistro") # Pegando numero de registro
-            client = exelData.loc[exelData["geral_numeroregistro"] == register.strip()] # Localizando por numero de registro
+            client = exelData.loc[exelData["geral_numeroregistro"].str.upper().str.strip() == register.strip().upper()] # Localizando por numero de registro
             if not client.empty: # Verificando se existe o cliente
                 exelData = exelData.loc[exelData["hosp_numeroreserva"] == client.iloc[0]["hosp_numeroreserva"]] # Localizando pelo numero de reserva
             else: # Caso não exista
