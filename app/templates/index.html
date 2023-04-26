@@ -189,36 +189,39 @@
       const outdate = document.getElementById("out");
       const query = document.getElementById("query");
 
-      function organizate(r, i, c, p, data) {
+      function organizate(r, i, c, p) {
+        console.log(r);
         reserv.value = r;
         id.value = i;
         category.value = c;
         pous.value = p;
+      }
 
-        console.log(data);
-
-        if (data === null) {
-          return;
-        }
-
+      async function getSelect(data) {
         const number = consult.value.toUpperCase().trim();
         document.querySelectorAll("#query tr").forEach((el) => el.remove());
+        const table = [];
         data.forEach((c) => {
-          console.log(
-            String(c.geral_numeroregistro).trim().toUpperCase(),
-            number
-          );
           if (String(c.geral_numeroregistro).trim().toUpperCase() === number) {
             const option = document.createElement("option");
-            option.innerText = c.hosp_nomehospede;
+            option.innerText = `${c.hosp_nomehospede} (${c.hosp_numeroreserva})`;
             option.value = c.hosp_qtdevagas;
             hosp.appendChild(option);
           }
+        });
+      }
 
+      async function getTable(client) {
+        document.querySelectorAll("#query tr").forEach((el) => el.remove());
+        const search = await fetch(
+          "/clients?hosp_numeroreserva=" + client.hosp_numeroreserva
+        ).then((j) => j.json());
+        console.log(search);
+        const data = search.data;
+        data.forEach((c) => {
           if (c.hosp_nomehospede == null) {
             return;
           }
-
           const type = document.createElement("th");
           const register = document.createElement("th");
           const name = document.createElement("th");
@@ -249,9 +252,9 @@
           client.hosp_numeroreserva,
           client.geral_idsistema,
           client.hosp_categoriapacote,
-          client.hosp_nomepousada,
-          null
+          client.hosp_nomepousada
         );
+        getTable(client);
       });
 
       send.addEventListener("click", async () => {
@@ -262,20 +265,24 @@
 
         const data = dataframe.data;
 
-        if (data.length > 4 || data.length === 0) {
+        if (data.length === 0 || data.length > 100) {
           return;
         }
 
         document.querySelectorAll("#hosp option").forEach((e) => e.remove());
 
         const client = data[0];
+
         organizate(
           client.hosp_numeroreserva,
           client.geral_idsistema,
           client.hosp_categoriapacote,
-          client.hosp_nomepousada,
-          data
+          client.hosp_nomepousada
         );
+
+        getSelect(data);
+
+        getTable(client);
       });
     </script>
     <script
