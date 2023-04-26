@@ -102,13 +102,25 @@
                 </div>
                 <div class="col-6">
                   <div class="form-floating mb-5">
-                    <input type="text" class="form-control" id="in" disabled />
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="in"
+                      disabled
+                      value="05/05/2023"
+                    />
                     <label for="hosp_dataentrada">Data IN</label>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="form-floating mb-5">
-                    <input type="text" class="form-control" id="out" disabled />
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="out"
+                      disabled
+                      value="07/05/2023"
+                    />
                     <label for="hosp_datasaida">Data OUT</label>
                   </div>
                 </div>
@@ -133,37 +145,31 @@
                 </div>
                 <div class="col-12 bg-white p-5 rounded container">
                   <h5 class="text-center mb-3">
-                    TRANSPORTE IDA E VOLTA | MORRO DE SÃO PAULO:
+                    HOSPEDAGEM SAN ISLAND WEEKEND
                   </h5>
                   <p>
-                    Para você que se antecipou e comprou seu transfer de IDA e
-                    RETORNO, nossa equipe entrará em contato para agendar seu
-                    horário, de acordo com os horários disponíveis.
+                    Data IN: 05/05/2023 <br />
+                    Data OUT: 07/05/2023
                   </p>
                   <p>
-                    Se ainda não comprou, corra no
-                    <a href="https://www.sanfolia.com" target="_blank"
-                      >www.sanfolia.com</a
-                    >
-                    e garanta sua vaga, assim poderemos organizar sua logística.
-                  </p>
-                  <p>Nos vemos em Morro de São Paulo,</p>
-                  <p>Equipe Logística</p>
-                  <p>
-                    <strong>Cel:</strong>
-                    <a href="https://wa.me/5519994593637" target="_blank"
-                      >(19) 99459-3637</a
-                    >
+                    Horário Check IN: 14h00 <br />
+                    Horário Check OUT: 12h00
                   </p>
                   <p>
-                    <strong>Email:</strong>
-                    <a
-                      href="mailto:sanconcierge.logistica@agmuller.com.br"
-                      style="font-size: 13px"
-                      >sanconcierge.logistica@agmuller.com.br</a
-                    >
+                    NFORMAÇÕES:
+                    <i>
+                      Diárias incluem café da manhã. Informações e contratações
+                      de diárias extras, entrar diretamente com a pousada onde
+                      estará alocado.
+                    </i>
                   </p>
-                  <p class="fst-italic">SAN CONCIERGE</p>
+                  <strong
+                    >Não deixem para última hora a compra e agendamento dos
+                    horários de seus transfers IN e OUT!</strong
+                  >
+                  <div class="text-center col-md-4 col-8 container">
+                    <img src="/static/logo.png" class="col-12" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -183,48 +189,26 @@
       const outdate = document.getElementById("out");
       const query = document.getElementById("query");
 
-      function organizate(r, i, c, p, ind, o, data) {
-        const indd = new Date(ind);
-        const indf = `${(() => {
-          if (indd.getDate() < 10) {
-            return `0${indd.getDate()}`;
-          }
-          return indd.getDate();
-        })()}/${(() => {
-          if (indd.getMonth() + 1 < 10) {
-            return `0${indd.getMonth() + 1}`;
-          }
-          return indd.getMonth() + 1;
-        })()}/${indd.getFullYear()}`;
-
-        const odd = new Date(o);
-        const odf = `${(() => {
-          if (odd.getDate() < 10) {
-            return `0${odd.getDate()}`;
-          }
-          return odd.getDate();
-        })()}/${(() => {
-          if (odd.getMonth() + 1 < 10) {
-            return `0${odd.getMonth() + 1}`;
-          }
-          return odd.getMonth() + 1;
-        })()}/${odd.getFullYear()}`;
-
+      function organizate(r, i, c, p, data) {
         reserv.value = r;
         id.value = i;
         category.value = c;
         pous.value = p;
-        indate.value = indf;
-        outdate.value = odf;
+
+        console.log(data);
 
         if (data === null) {
           return;
         }
 
-        const number = consult.value;
+        const number = consult.value.toUpperCase().trim();
         document.querySelectorAll("#query tr").forEach((el) => el.remove());
         data.forEach((c) => {
-          if (c.geral_numeroregistro === number) {
+          console.log(
+            String(c.geral_numeroregistro).trim().toUpperCase(),
+            number
+          );
+          if (String(c.geral_numeroregistro).trim().toUpperCase() === number) {
             const option = document.createElement("option");
             option.innerText = c.hosp_nomehospede;
             option.value = c.hosp_qtdevagas;
@@ -266,8 +250,6 @@
           client.geral_idsistema,
           client.hosp_categoriapacote,
           client.hosp_nomepousada,
-          client.hosp_dataentrada,
-          client.hosp_datasaida,
           null
         );
       });
@@ -292,8 +274,6 @@
           client.geral_idsistema,
           client.hosp_categoriapacote,
           client.hosp_nomepousada,
-          client.hosp_dataentrada,
-          client.hosp_datasaida,
           data
         );
       });
