@@ -3,7 +3,7 @@ from pandas import read_excel, ExcelWriter
 from os import getcwd
 from json import loads
 from env import USERNAME, PASSWORD, PORT
-app = Flask(__name__,template_folder="templates") # Criando aplicação
+app = Flask(__name__,template_folder="templates",static_folder="media") # Criando aplicação
 @app.route("/clients", methods=["GET","POST"]) # Rota /clients
 def clients(): # Função de controlador das rotas do cliente
     filename = f'{getcwd()}/app/data/clients.xlsx' # Caminho para o arquivo exel
