@@ -15,17 +15,13 @@ def clients(): # Função de controlador das rotas do cliente
             return jsonify({"error":"Erro ao tentar acessar a planilha de dados."}) # retornando erro
         if args.get("geral_numeroregistro"): # Se tiver uma query com numero de registro 
             register = args.get("geral_numeroregistro") # Pegando numero de registro
-            client = exelData.loc[exelData["geral_numeroregistro"].str.upper().str.strip() == register.strip().upper()] # Localizando por numero de registro
-            if not client.empty: # Verificando se existe o cliente
-                exelData = exelData.loc[exelData["hosp_numeroreserva"] == client.iloc[0]["hosp_numeroreserva"]] # Localizando pelo numero de reserva
-            else: # Caso não exista
-                exelData = client # Passando uma array vazia
+            exelData = exelData.loc[exelData["geral_numeroregistro"].str.upper().str.strip() == register.strip().upper()] # Localizando por numero de registro
         elif args.get("hosp_qtdevagas"): # Se tiver uma query com id
             id = args.get("hosp_qtdevagas") # Pegando o id
             exelData = exelData.loc[exelData["hosp_qtdevagas"] == int(id)] # Passando o cliente
         elif args.get("hosp_numeroreserva"): # Caso haja um get com o numero de reserva
             reserv = args.get("hosp_numeroreserva") # Pegando o numero de reserva
-            exelData = exelData.loc[exelData["geral_numeroregistro"] == reserv] # Localizando um cliente pelo numero de reserva
+            exelData = exelData.loc[exelData["hosp_numeroreserva"] == int(reserv)] # Localizando um cliente pelo numero de reserva
         jsonData = exelData.to_json(orient='records') # Passando para json
         jsonData = loads(jsonData) # Carregando objeto em json
         return jsonify({"data": jsonData}), 200
