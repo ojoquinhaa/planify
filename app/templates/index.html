@@ -19,10 +19,7 @@
         <div className="card-body">
           <div class="text-center d-flex justify-content-center mb-5 pb-5">
             <div class="col-md-12">
-              <img
-                src="/media/myapp/voucher-frente.png"
-                class="img-fluid w-25"
-              />
+              <img src="/static/voucher-frente.png" class="img-fluid w-25" />
             </div>
           </div>
           <div class="row justify-content-center">
@@ -58,7 +55,7 @@
             </div>
           </div>
           <div
-            class="row g-5 gap-5 m-5 p-5 d-flex justify-content-center"
+            class="row col-12 mt-3 ml-auto mr-auto d-flex justify-content-center"
             v-if="itsok == true"
           >
             <div class="col-md-10 bg-secondary p-5 rounded">
@@ -80,7 +77,7 @@
                     <label for="geral_idsistema">ID San Island</label>
                   </div>
                 </div>
-                <p class="text-center h1 m-5 p-5">HOSPEDAGEM</p>
+                <p class="text-center h1 col-12">HOSPEDAGEM</p>
                 <div class="col-6">
                   <div class="form-floating mb-5">
                     <input
@@ -115,7 +112,7 @@
                     <label for="hosp_datasaida">Data OUT</label>
                   </div>
                 </div>
-                <div class="col-12 my-5 py-5">
+                <div class="col-12" style="max-width: 100%; overflow: auto">
                   <table
                     class="table table-row-dashed table-row-gray-300 gy-2 bg-white rounded"
                   >
@@ -134,7 +131,7 @@
                     <label for="geral_observacao">Observação</label>
                   </div>
                 </div>
-                <div class="col-12 bg-white p-5 rounded">
+                <div class="col-12 bg-white p-5 rounded container">
                   <h5 class="text-center mb-3">
                     TRANSPORTE IDA E VOLTA | MORRO DE SÃO PAULO:
                   </h5>
@@ -160,7 +157,9 @@
                   </p>
                   <p>
                     <strong>Email:</strong>
-                    <a href="mailto:sanconcierge.logistica@agmuller.com.br"
+                    <a
+                      href="mailto:sanconcierge.logistica@agmuller.com.br"
+                      style="font-size: 13px"
                       >sanconcierge.logistica@agmuller.com.br</a
                     >
                   </p>
