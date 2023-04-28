@@ -71,7 +71,7 @@
           <div
             id="dashboard"
             class="col-md-8 shadow-lg d-none"
-            style="height: 600px"
+            style="height: 800px"
           >
             <div
               class="col-md-1 h-auto col-12 h-md-100 p-2 border d-md-block d-flex justify-content-around align-items-center"
@@ -80,97 +80,406 @@
                 <img src="/static/logo.png" class="col-md-8 col-12" />
               </div>
               <div class="container col-md-12 col-2 mt-2 mt-md-5 text-center">
-                <a href="#" target="_blank" id="export" class="col-12"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    width="32"
-                    heigth="32"
-                    class="bi bi-download"
-                    viewBox="0 0 16 16"
+                <i
+                  class="bi bi-table h3"
+                  id="tableButton"
+                  style="cursor: pointer"
+                ></i>
+              </div>
+              <div class="container col-md-12 col-2 mt-2 mt-md-5 text-center">
+                <i class="bi bi-download h3" style="cursor: pointer"></i>
+              </div>
+              <div class="container col-md-12 col-2 mt-2 mt-md-5 text-center">
+                <i
+                  class="bi bi-upload h3"
+                  id="uploadButton"
+                  style="cursor: pointer"
+                ></i>
+              </div>
+              <div class="container col-md-12 col-2 mt-2 mt-md-5 text-center">
+                <i
+                  class="bi bi-person-add h3"
+                  style="cursor: pointer"
+                  id="newButton"
+                ></i>
+              </div>
+            </div>
+            <div class="col-md-11 d-md-flex h-100 func" style="height: 800px">
+              <div class="col-md-12 h-100">
+                <div
+                  class="tadd d-flex justify-content-around table-responsive h-auto container col-12 p-2 bg-secondary text-white"
+                >
+                  <h5 class="d-md-block d-none">clients.xlsx</h5>
+                  <div class="col-md-5 col-9">
+                    <div class="input-group">
+                      <select id="filter" class="form-select form-select-sm">
+                        <option>Filtro</option>
+                      </select>
+                      <input
+                        type="search"
+                        id="search"
+                        class="form-control form-control-sm"
+                        placeholder="Search"
+                      />
+                      <input
+                        type="button"
+                        id="confirm"
+                        class="btn btn-block btn-sm btn-primary"
+                        value="Procurar"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="container col-12 container h-100 d-flex justify-content-center align-items-center"
+                  id="tdiv"
+                  style="max-width: 100%; overflow: auto; max-height: 90%"
+                >
+                  <div
+                    class="spinner-grow text-primary"
+                    style="width: 3rem; height: 3rem"
+                    role="status"
+                    id="loader"
                   >
-                    <path
-                      d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"
-                    />
-                    <path
-                      d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"
-                    /></svg
-                ></a>
+                    <span class="sr-only"></span>
+                  </div>
+                  <table
+                    class="table table-striped table-bordered col-12 d-none"
+                    style="width: 100%"
+                    id="table"
+                  >
+                    <thead>
+                      <tr></tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
               </div>
             </div>
             <div
-              class="col-md-11 h-100 d-flex justify-content-center align-items-center"
+              class="col-12 d-none h-100 func text-center align-items-center justify-content-center"
+              style="height: 800px"
             >
-              <div class="text-center">
-                <h1>Importar Planilha</h1>
-                <small>*.xlsx ou *.cvs</small>
-                <form enctype="multipart/form-data" method="POST" id="import">
-                  <div class="col-12 mb-3">
-                    <div class="input-group">
-                      <input
-                        type="file"
-                        name="clients"
-                        class="form-control-file form-control"
-                      />
-                    </div>
+              <form enctype="multipart/form-data" method="POST" id="import">
+                <h1>Importar uma nova tabela</h1>
+                <small>*.xlsx</small>
+                <div class="col-12 mb-3">
+                  <div class="input-group">
+                    <input
+                      type="file"
+                      name="clients"
+                      class="form-control-file form-control"
+                    />
                   </div>
-                  <div class="col-12">
-                    <div class="input-group">
-                      <input
-                        type="submit"
-                        value="Upload"
-                        class="btn btn-block btn-primary col-12"
-                      />
-                    </div>
+                </div>
+                <div class="col-12">
+                  <div class="input-group">
+                    <input
+                      type="submit"
+                      value="Upload"
+                      class="btn btn-block btn-primary col-12"
+                    />
                   </div>
-                </form>
-              </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <script type="text/javascript">
-      const username = document.getElementById("username");
-      const password = document.getElementById("password");
-      const send = document.getElementById("send");
-      const form = document.getElementById("form");
-      const msg = document.getElementById("msg");
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.min.js"
+      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
+      integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(document).ready(async () => {
+        const username = $("#username");
+        const password = $("#password");
+        const loader = $("#loader");
+        const tdiv = $("#tdiv");
+        const send = $("#send");
+        const form = $("#form");
+        const msg = $("#msg");
+        const filter = $("#filter");
+        const search = $("#search");
+        const confirm = $("#confirm");
 
-      let user;
-      let pass;
+        let user;
+        let pass;
 
-      send.addEventListener("click", async () => {
-        user = username.value;
-        pass = password.value;
-        const formData = new FormData(form);
+        send.on("click", async () => {
+          user = username.val();
+          pass = password.val();
+          const formData = new FormData(form[0]);
 
-        const login = await fetch(`/login?username=${user}&password=${pass}`, {
-          method: "POST",
-          body: formData,
-        }).then((j) => j.json());
+          const login = await fetch(
+            `/login?username=${user}&password=${pass}`,
+            {
+              method: "POST",
+              body: formData,
+            }
+          ).then((j) => j.json());
 
-        msg.classList.remove("d-none", "text-danger");
-        if (login.error) {
-          msg.innerText = "Credenciáis inválidas.";
-          msg.classList.add("text-danger");
-          return;
-        }
+          msg.removeClass("d-none text-danger");
+          if (login.error) {
+            msg.text("Credenciáis inválidas.").addClass("text-danger");
+            return;
+          }
 
-        msg.innerText = "Sucesso ao fazer o login! Redirecionando...";
-        msg.classList.add("text-success");
+          msg
+            .text("Sucesso ao fazer o login! Redirecionando...")
+            .addClass("text-success");
 
-        setTimeout(() => {
-          document.getElementById("loginDiv").classList.add("d-none");
-          document.getElementById("dashboard").classList.remove("d-none");
-          document.getElementById("dashboard").classList.add("d-md-flex");
-        }, 500);
+          setTimeout(() => {
+            $("#loginDiv").addClass("d-none");
+            $("#dashboard").removeClass("d-none").addClass("d-md-flex");
+          }, 500);
 
-        const exportButton = document.getElementById("export");
-        exportButton.href = `/download?username=${user}&password=${pass}`;
+          const exportButton = $("#export");
+          exportButton.attr(
+            "href",
+            `/download?username=${user}&password=${pass}`
+          );
 
-        const importForm = document.getElementById("import");
-        importForm.action = `/clients?username=${user}&password=${pass}`;
+          const importForm = $("#import");
+          importForm.attr(
+            "action",
+            `/clients?username=${user}&password=${pass}`
+          );
+        });
+
+        /** TABELA **/
+        const table = $("#table");
+        const clients = await fetch("/clients").then((t) => t.json());
+
+        /** ADICIONANDO AS COLUNAS **/
+        const collumns = [
+          "hosp_qtdevagas",
+          "hosp_numeroreserva",
+          "geral_qtderegistros",
+          "geral_idsistema",
+          "geral_numeroregistro",
+          "hosp_nomehospede",
+          "geral_titularidadecompra",
+          "hosp_tipoquarto",
+          "hosp_categoriaquarto",
+          "hosp_dataentrada",
+          "hosp_datasaida",
+          "hosp_qtdediaria",
+          "hosp_nomepousada",
+          "hosp_categoriapacote",
+          "hosp_statuscontratopousada",
+          "Ações",
+        ];
+        collumns.forEach((c) => {
+          $("#table thead tr").append($("<th></th>").text(c));
+          filter.append($("<option></option>").text(c).val(c));
+        });
+
+        /** ESCONDER TODAS AS FUNÇÕES **/
+        const hideAllFunc = () => {
+          document.querySelectorAll(".func").forEach((el) => {
+            el.classList.add("d-none");
+            el.classList.remove("d-flex");
+            el.classList.remove("d-md-flex");
+          });
+        };
+
+        const createTextInTh = (value) => {
+          return $("<th></th>").append(value);
+        };
+
+        /** Loader **/
+        const startLoader = () => {
+          loader.removeClass("d-none");
+          tdiv.addClass("d-flex");
+          table.addClass("d-none");
+        };
+
+        const stopLoader = () => {
+          loader.addClass("d-none");
+          tdiv.removeClass("d-flex");
+          table.removeClass("d-none");
+        };
+
+        /** Função para limpar a tabela **/
+        const cleanTable = () => {
+          document
+            .querySelectorAll("#table tbody tr")
+            .forEach((el) => el.remove());
+        };
+
+        /** ADICIONANDO TODOS OS CLIENTES **/
+        const addClientsToTheTable = (filt = "", search = "") => {
+          cleanTable();
+          startLoader();
+
+          /** FILTRAR OS RESULTADOS **/
+          filt = filt.trim(); // Trim no filtro
+          search = search.trim().toUpperCase();
+          let filteredClients = []; // Clientes filtrados
+          // Exatos
+          if (filt !== "" && search !== "") {
+            if (filt === "hosp_qtdevagas") {
+              filteredClients = clients.data.filter(
+                (c) => c.hosp_qtdevagas == search
+              );
+            }
+            if (filt === "hosp_numeroreserva") {
+              filteredClients = clients.data.filter(
+                (c) => c.hosp_numeroreserva == search
+              );
+            }
+            if (filt === "geral_qtderegistros") {
+              filteredClients = clients.data.filter(
+                (c) => c.geral_qtderegistros == search
+              );
+            }
+            if (filt === "geral_idsistema") {
+              filteredClients = clients.data.filter(
+                (c) => c.geral_idsistema == search
+              );
+            }
+            if (filt === "hosp_qtdediaria") {
+              filteredClients = clients.data.filter(
+                (c) => c.hosp_qtdediaria == search
+              );
+            }
+            if (filt === "geral_numeroregistro") {
+              filteredClients = clients.data.filter(
+                (c) =>
+                  String(c.geral_numeroregistro).trim().toUpperCase() == search
+              );
+            }
+            // Não exatos
+            const searchRegex = new RegExp(search, "g");
+            if (filt === "hosp_nomehospede") {
+              filteredClients = clients.data.filter((c) =>
+                String(c.hosp_nomehospede).match(searchRegex)
+              );
+            }
+            if (filt === "geral_titularidadecompra") {
+              filteredClients = clients.data.filter((c) =>
+                c.hosp_nomehospede.match(searchRegex)
+              );
+            }
+            if (filt === "hosp_tipoquarto") {
+              filteredClients = clients.data.filter((c) =>
+                c.hosp_tipoquarto.match(searchRegex)
+              );
+            }
+            if (filt === "hosp_categoriaquarto") {
+              filteredClients = clients.data.filter((c) =>
+                c.hosp_categoriaquarto.match(searchRegex)
+              );
+            }
+            if (filt === "hosp_nomepousada") {
+              filteredClients = clients.data.filter((c) =>
+                String(c.hosp_nomepousada).match(searchRegex)
+              );
+            }
+            if (filt === "hosp_categoriapacote") {
+              filteredClients = clients.data.filter((c) =>
+                String(c.hosp_categoriapacote).match(searchRegex)
+              );
+            }
+            if (filt === "hosp_categoriapacote") {
+              filteredClients = clients.data.filter((c) =>
+                c.hosp_categoriapacote.match(searchRegex)
+              );
+            }
+          } else {
+            filteredClients = clients.data;
+          }
+          filteredClients.forEach((client) => {
+            const tr = $("<tr></tr>")
+              .addClass("text-center ")
+              .css("vertical-align", "middle");
+
+            // Quantidade de vagas
+            tr.append(createTextInTh(client.hosp_qtdevagas));
+
+            // Número de reserva
+            tr.append(createTextInTh(client.hosp_numeroreserva));
+
+            // Quantidade de registros
+            tr.append(createTextInTh(client.geral_qtderegistros));
+
+            // ID do sistema
+            tr.append(createTextInTh(client.geral_idsistema));
+
+            // Número de registro
+            tr.append(createTextInTh(client.geral_numeroregistro));
+
+            // Nome do hospede
+            tr.append(createTextInTh(client.hosp_nomehospede));
+
+            // Quem comprou
+            tr.append(createTextInTh(client.geral_titularidadecompra));
+
+            // Tipo de quarto
+            tr.append(createTextInTh(client.hosp_tipoquarto));
+
+            // Categoria de quarto
+            tr.append(createTextInTh(client.hosp_categoriaquarto));
+
+            // Data de entrada
+            tr.append(createTextInTh(client.hosp_dataentrada));
+
+            // Data de saida
+            tr.append(createTextInTh(client.hosp_datasaida));
+
+            // Diárias
+            tr.append(createTextInTh(client.hosp_qtdediaria));
+
+            // Pousada
+            tr.append(createTextInTh(client.hosp_nomepousada));
+
+            // Pacote
+            tr.append(createTextInTh(client.hosp_categoriapacote));
+
+            // Status
+            tr.append(createTextInTh(client.hosp_statuscontratopousada));
+
+            tr.append(
+              $("<th></th>").append(
+                $("<i></i>")
+                  .addClass("bi bi-gear")
+                  .css("cursor", "pointer")
+                  .click(() => {})
+              )
+            );
+
+            // Adicionando tudo
+            $("#table tbody").append(tr);
+          });
+          stopLoader();
+        };
+
+        confirm.click(() => addClientsToTheTable(filter.val(), search.val()));
+
+        addClientsToTheTable();
+
+        const uploadButton = $("#uploadButton");
+        const tableButton = $("#tableButton");
+        uploadButton.click(() => {
+          hideAllFunc();
+          const func = document.querySelectorAll(".func")[1];
+          func.classList.remove("d-none");
+          func.classList.add("d-flex");
+        });
+        tableButton.click(() => {
+          hideAllFunc();
+          const func = document.querySelectorAll(".func")[0];
+          func.classList.remove("d-none");
+          func.classList.add("d-md-flex");
+        });
       });
     </script>
   </body>
