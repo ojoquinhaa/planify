@@ -1,9 +1,9 @@
 from flask import Flask, request, jsonify, send_file, render_template
-from pandas import read_excel, ExcelWriter
+from pandas import read_excel, ExcelWriter, DataFrame, concat
 from os import getcwd
 from json import loads
 from env import ADMIN, SECRET, PORT
-app = Flask(__name__,template_folder="templates") # Criando aplicação
+app = Flask(__name__,template_folder="templates",static_folder='../static') # Criando aplicação
 @app.route("/clients", methods=["GET","POST"]) # Rota /clients
 def clients(): # Função de controlador das rotas do cliente
     filename = f'{getcwd()}/app/data/clients.xlsx' # Caminho para o arquivo exel
@@ -27,6 +27,38 @@ def clients(): # Função de controlador das rotas do cliente
         return jsonify({"data": jsonData}), 200
     if request.method == "POST":
         args = request.args # Pegando o query
+        body = request.form # Pegando o formulario
+        if args.get("username") != ADMIN or args.get("password") != SECRET: # Verificando o login com o env
+            return jsonify({"error":"Credenciáis inválidas."}), 403 # Retornando erro
+        try:
+            exelData = read_excel(filename) # tentando carregar exel
+        except:
+            return jsonify({"error":"Erro ao tentar acessar a planilha de dados."}) # retornando erro
+        df = DataFrame(body, columns=exelData.columns, index=[0])
+        print(df.to_json())
+        exelData = concat([exelData,df],ignore_index=True)
+        print(exelData)
+        exelData.to_excel(filename)
+        return jsonify({"msg":"Cliente adicionado com sucesso!"})
+@app.route("/download", methods=["GET", "POST"])
+def dowload(): # Função para fazer o dowload do arquivo exel
+    filename = f'{getcwd()}/app/data/clients.xlsx' # Caminho para o arquivo exel
+    if request.method == "GET":
+        args = request.args # Pegando o query
+        if args.get("username") != ADMIN or args.get("password") != SECRET: # Verificando o login com o env
+            return jsonify({"error":"Credenciáis inválidas."}) # Retornando erro
+        # Carregando o arquivo Excel do disco
+        filename = f'{getcwd()}/app/data/clients.xlsx' # Nome do arquivo exel
+        exelData = read_excel(filename) # Lendo o arquivo exel usando o pandas
+        if exelData.empty:
+            return jsonify({"msg":"Não possui nenhuma planilha dentro do servidor."})
+        # Escrevendo o DataFrame em um arquivo Excel temporário
+        with ExcelWriter(filename) as writer:
+            exelData.to_excel(writer, index=False)
+        # Enviando o arquivo Excel para o cliente
+        return send_file(filename, as_attachment=True)
+    if request.method == "POST":
+        args = request.args # Pegando o query
         if args.get("username") != ADMIN or args.get("password") != SECRET: # Conferindo login com o env
             return "Falha ao realizar o login." # Mensagem de erro
         files = request.files # Pegando os arquivos da request
@@ -40,21 +72,6 @@ def clients(): # Função de controlador das rotas do cliente
             file.save(filename)
             return "Arquivo salvo com sucesso!" # Enviando mensagem de sucesso
         return "Falha ao salvar o arquivo." # Enviando erro
-@app.route("/download", methods=["GET"])
-def dowload(): # Função para fazer o dowload do arquivo exel
-    args = request.args # Pegando o query
-    if args.get("username") != ADMIN or args.get("password") != SECRET: # Verificando o login com o env
-        return jsonify({"error":"Credenciáis inválidas."}) # Retornando erro
-    # Carregando o arquivo Excel do disco
-    filename = f'{getcwd()}/app/data/clients.xlsx' # Nome do arquivo exel
-    exelData = read_excel(filename) # Lendo o arquivo exel usando o pandas
-    if exelData.empty:
-        return jsonify({"msg":"Não possui nenhuma planilha dentro do servidor."})
-    # Escrevendo o DataFrame em um arquivo Excel temporário
-    with ExcelWriter(filename) as writer:
-        exelData.to_excel(writer, index=False)
-    # Enviando o arquivo Excel para o cliente
-    return send_file(filename, as_attachment=True)
 @app.route("/login", methods=["POST"])
 def login(): # Rota para conferir o login
     if request.method == "POST": # Metodo POST

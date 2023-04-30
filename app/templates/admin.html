@@ -26,7 +26,7 @@
         >
           <div id="loginDiv" class="col-md-3 container">
             <div class="text-center col-11 container mb-3">
-              <img src="/static/logo.png" class="col-4" />
+              <img src="/static/mensager.png" class="col-5" />
             </div>
             <form id="form" class="col-11 container shadow-lg p-3">
               <div class="col-12 mb-3">
@@ -66,6 +66,9 @@
                   />
                 </div>
               </div>
+              <div class="col-12 text-center">
+                <img class="col-3" src="/static/logo.png" />
+              </div>
             </form>
           </div>
           <div
@@ -77,7 +80,7 @@
               class="col-md-1 h-auto col-12 h-md-100 p-2 border d-md-block d-flex justify-content-around align-items-center"
             >
               <div class="container col-md-12 col-2 mt-2 text-center">
-                <img src="/static/logo.png" class="col-md-8 col-12" />
+                <img src="/static/mensager.png" class="col-md-8 col-12" />
               </div>
               <div class="container col-md-12 col-2 mt-2 mt-md-5 text-center">
                 <i
@@ -87,7 +90,9 @@
                 ></i>
               </div>
               <div class="container col-md-12 col-2 mt-2 mt-md-5 text-center">
-                <i class="bi bi-download h3" style="cursor: pointer"></i>
+                <a id="export" style="cursor: pointer"
+                  ><i class="bi bi-download h3"></i
+                ></a>
               </div>
               <div class="container col-md-12 col-2 mt-2 mt-md-5 text-center">
                 <i
@@ -109,11 +114,13 @@
                 <div
                   class="tadd d-flex justify-content-around table-responsive h-auto container col-12 p-2 bg-secondary text-white"
                 >
-                  <h5 class="d-md-block d-none">clients.xlsx</h5>
-                  <div class="col-md-5 col-9">
+                  <button class="btn btn-primary" type="button" id="refresh">
+                    <i class="bi bi-arrow-clockwise"></i> Atualizar
+                  </button>
+                  <div class="col-md-5 col-8">
                     <div class="input-group">
                       <select id="filter" class="form-select form-select-sm">
-                        <option>Filtro</option>
+                        <option value="">Filtro</option>
                       </select>
                       <input
                         type="search"
@@ -148,8 +155,28 @@
                     style="width: 100%"
                     id="table"
                   >
-                    <thead>
-                      <tr></tr>
+                    <thead
+                      class="bg-info text-center"
+                      style="position: sticky; top: 0"
+                    >
+                      <tr>
+                        <th>Ações</th>
+                        <th>hosp_qtdevagas</th>
+                        <th>hosp_numeroreserva</th>
+                        <th>geral_qtderegistros</th>
+                        <th>geral_idsistema</th>
+                        <th>geral_numeroregistro</th>
+                        <th style="min-width: 300px">hosp_nomehospede</th>
+                        <th>geral_titularidadecompra</th>
+                        <th>hosp_tipoquarto</th>
+                        <th>hosp_categoriaquarto</th>
+                        <th>hosp_dataentrada</th>
+                        <th>hosp_datasaida</th>
+                        <th>hosp_qtdediaria</th>
+                        <th>hosp_nomepousada</th>
+                        <th>hosp_categoriapacote</th>
+                        <th>hosp_statuscontratopousada</th>
+                      </tr>
                     </thead>
                     <tbody></tbody>
                   </table>
@@ -183,6 +210,214 @@
                 </div>
               </form>
             </div>
+            <div class="col-11 d-none h-100 func" style="height: 800px">
+              <h1 class="text-center text-primary">Novo</h1>
+              <hr />
+              <form class="col-md-11 col-12 container" id="newForm">
+                <div class="d-md-flex col-12 justify-content-around mb-3">
+                  <div class="form-group col-md-5">
+                    <label class="form-label">Nome do hospede</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="hosp_nomehospede"
+                      name="hosp_nomehospede"
+                      id="nomeHosp"
+                    />
+                  </div>
+                  <div class="form-group col-md-5">
+                    <label class="form-label">Quantidade de vagas</label>
+                    <div class="d-flex col-12">
+                      <div class="input-group">
+                        <input
+                          type="number"
+                          class="form-control"
+                          placeholder="hosp_qtdevagas"
+                          name="hosp_qtdevagas"
+                          id="hospVagas"
+                        />
+                      </div>
+                      <input
+                        class="form-check m-2"
+                        type="checkbox"
+                        id="hospVagasCheck"
+                      />
+                      <small>Preencher automaticamente</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-md-flex col-12 justify-content-around mb-3">
+                  <div class="form-group col-md-3">
+                    <label class="form-label">Número de reserva</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        placeholder="hosp_numeroreserva"
+                        name="hosp_numeroreserva"
+                        id="numeroReserva"
+                      />
+                      <input
+                        class="form-check m-2"
+                        type="checkbox"
+                        id="numeroReservaCheck"
+                      />
+                      <small class="col-2">Preencher automaticamente</small>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label class="form-label">Quantidade de Registros</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        placeholder="geral_qtderegistros"
+                        name="geral_qtderegistros"
+                        id="quantidadeRegistro"
+                      />
+                      <input
+                        class="form-check m-2"
+                        type="checkbox"
+                        id="quantidadeRegistroCheck"
+                      />
+                      <small class="col-2">Preencher automaticamente</small>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label class="form-label">Id no sistema</label>
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        placeholder="geral_idsistema"
+                        name="geral_idsistema"
+                        id="idSistema"
+                      />
+                      <input
+                        class="form-check m-2"
+                        type="checkbox"
+                        id="idSistemaCheck"
+                      />
+                      <small class="col-2">Preencher automaticamente</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-md-flex col-12 justify-content-around mb-3">
+                  <div class="form-group col-md-5">
+                    <label>Nome do titular</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="titularCompra"
+                      placeholder="geral_titularidadecompra"
+                      name="geral_titularidadecompra"
+                    />
+                  </div>
+                  <div class="form-group col-md-5">
+                    <label>Número de registro</label>
+                    <div class="d-flex col-12">
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          maxlength="8"
+                          class="form-control"
+                          placeholder="geral_numeroregistro"
+                          name="geral_numeroregistro"
+                          id="geralRegistro"
+                        />
+                      </div>
+                      <input
+                        class="form-check m-2"
+                        type="checkbox"
+                        id="geralRegistroCheck"
+                      />
+                      <small>Gerar novo</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-md-flex col-12 justify-content-around mb-3">
+                  <div class="form-group col-md-5">
+                    <label>Categoria do quarto</label>
+                    <select
+                      class="form-select"
+                      name="hosp_categoriaquarto"
+                      id="categoriaQuarto"
+                    >
+                      <option value="STANDART">STANDART</option>
+                      <option value="Share">Share</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-5">
+                    <label>Tipo do quarto</label>
+                    <select
+                      class="form-select"
+                      name="hosp_tipoquarto"
+                      id="tipoQuarto"
+                    >
+                      <option value="DUPLO">DUPLO</option>
+                      <option value="Share">Share</option>
+                      <option value="TRIPLO">TRIPLO</option>
+                      <option value="QUARTUPLO">QUARTUPLO</option>
+                      <option value="QUINTUPLO">QUINTUPLO</option>
+                      <option value="SEXTUPLO">SEXTUPLO</option>
+                      <option value="Share.extra">Share.extra</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="d-md-flex col-12 justify-content-around mb-3">
+                  <div class="form-group col-md-3">
+                    <label>Pousada</label>
+                    <div class="d-flex col-12">
+                      <select
+                        class="form-select"
+                        name="hosp_nomepousada"
+                        id="nomePousada"
+                      ></select>
+                      <input
+                        class="form-control d-none"
+                        type="text"
+                        id="novaPousada"
+                        placeholder="hosp_nomepousada"
+                      />
+                      <input
+                        class="form-check m-2"
+                        type="checkbox"
+                        id="nomePousadaCheck"
+                      />
+                      <small>Nova</small>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Pacote</label>
+                    <select
+                      class="form-select"
+                      name="hosp_categoriapacote"
+                      id="categoriaPacote"
+                    ></select>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Contrato da Pousada</label>
+                    <select
+                      class="form-select"
+                      name="hosp_statuscontratopousada"
+                    >
+                      <option>GARANTIDO</option>
+                      <option>EXTRA</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <input
+                      class="btn btn-primary btn-block col-12"
+                      id="create"
+                      value="Confirmar"
+                      type="button"
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -209,6 +444,26 @@
         const filter = $("#filter");
         const search = $("#search");
         const confirm = $("#confirm");
+        const uploadButton = $("#uploadButton");
+        const tableButton = $("#tableButton");
+        const newButton = $("#newButton");
+        const refresh = $("#refresh");
+        const geralRegistro = $("#geralRegistro");
+        const nomeHosp = $("#nomeHosp");
+        const titularCompra = document.getElementById("titularCompra");
+        const quantidadeRegistro = $("#quantidadeRegistro");
+        const idSistema = $("#idSistema");
+        const numeroReserva = $("#numeroReserva");
+        const novaPousada = $("#novaPousada");
+        const nomePousada = $("#nomePousada");
+        const categoriaPacote = $("#categoriaPacote");
+        const geralRegistroCheck = $("#geralRegistroCheck");
+        const quantidadeRegistroCheck = $("#quantidadeRegistroCheck");
+        const idSistemaCheck = $("#idSistemaCheck");
+        const numeroReservaCheck = $("#numeroReservaCheck");
+        const nomePousadaCheck = $("#nomePousadaCheck");
+        const hospVagasCheck = $("#hospVagasCheck");
+        const hospVagas = $("#hospVagas");
 
         let user;
         let pass;
@@ -250,36 +505,32 @@
           const importForm = $("#import");
           importForm.attr(
             "action",
-            `/clients?username=${user}&password=${pass}`
+            `/download?username=${user}&password=${pass}`
           );
         });
 
         /** TABELA **/
         const table = $("#table");
-        const clients = await fetch("/clients").then((t) => t.json());
+        let clients = await fetch("/clients").then((t) => t.json());
 
-        /** ADICIONANDO AS COLUNAS **/
-        const collumns = [
-          "hosp_qtdevagas",
-          "hosp_numeroreserva",
-          "geral_qtderegistros",
-          "geral_idsistema",
-          "geral_numeroregistro",
-          "hosp_nomehospede",
-          "geral_titularidadecompra",
-          "hosp_tipoquarto",
-          "hosp_categoriaquarto",
-          "hosp_dataentrada",
-          "hosp_datasaida",
-          "hosp_qtdediaria",
-          "hosp_nomepousada",
-          "hosp_categoriapacote",
-          "hosp_statuscontratopousada",
-          "Ações",
-        ];
-        collumns.forEach((c) => {
-          $("#table thead tr").append($("<th></th>").text(c));
-          filter.append($("<option></option>").text(c).val(c));
+        // Atualizar os clientes
+        const refreshClients = async () => {
+          return await fetch("/clients").then((t) => t.json());
+        };
+        refresh.click(async () => {
+          clients = await refreshClients();
+          addClientsToTheTable();
+          filter.val("");
+          search.val("");
+        });
+
+        // Filtro
+        document.querySelectorAll("#table thead tr th").forEach((c, i) => {
+          if (i === 0) return;
+          const options = $("<option></option>");
+          options.val(c.innerText);
+          options.text(c.innerText);
+          filter.append(options);
         });
 
         /** ESCONDER TODAS AS FUNÇÕES **/
@@ -316,82 +567,104 @@
         };
 
         /** ADICIONANDO TODOS OS CLIENTES **/
-        const addClientsToTheTable = (filt = "", search = "") => {
+        const addClientsToTheTable = (filt = "", searchVal = "") => {
           cleanTable();
           startLoader();
 
           /** FILTRAR OS RESULTADOS **/
           filt = filt.trim(); // Trim no filtro
-          search = search.trim().toUpperCase();
+          searchVal = String(searchVal).trim().toUpperCase();
           let filteredClients = []; // Clientes filtrados
           // Exatos
-          if (filt !== "" && search !== "") {
+          if (filt !== "" && searchVal !== "") {
             if (filt === "hosp_qtdevagas") {
               filteredClients = clients.data.filter(
-                (c) => c.hosp_qtdevagas == search
+                (c) => c.hosp_qtdevagas == searchVal
               );
             }
             if (filt === "hosp_numeroreserva") {
               filteredClients = clients.data.filter(
-                (c) => c.hosp_numeroreserva == search
+                (c) => c.hosp_numeroreserva == searchVal
               );
             }
             if (filt === "geral_qtderegistros") {
               filteredClients = clients.data.filter(
-                (c) => c.geral_qtderegistros == search
+                (c) => c.geral_qtderegistros == searchVal
               );
             }
             if (filt === "geral_idsistema") {
               filteredClients = clients.data.filter(
-                (c) => c.geral_idsistema == search
+                (c) => c.geral_idsistema == searchVal
               );
             }
             if (filt === "hosp_qtdediaria") {
               filteredClients = clients.data.filter(
-                (c) => c.hosp_qtdediaria == search
+                (c) => c.hosp_qtdediaria == searchVal
               );
             }
             if (filt === "geral_numeroregistro") {
               filteredClients = clients.data.filter(
                 (c) =>
-                  String(c.geral_numeroregistro).trim().toUpperCase() == search
+                  String(c.geral_numeroregistro).trim().toUpperCase() ==
+                  searchVal
               );
             }
             // Não exatos
-            const searchRegex = new RegExp(search, "g");
+            const searchRegex = new RegExp(searchVal, "g");
             if (filt === "hosp_nomehospede") {
               filteredClients = clients.data.filter((c) =>
-                String(c.hosp_nomehospede).match(searchRegex)
+                String(c.hosp_nomehospede)
+                  .trim()
+                  .toUpperCase()
+                  .match(searchRegex)
               );
             }
             if (filt === "geral_titularidadecompra") {
               filteredClients = clients.data.filter((c) =>
-                c.hosp_nomehospede.match(searchRegex)
+                String(c.geral_titularidadecompra)
+                  .trim()
+                  .toUpperCase()
+                  .match(searchRegex)
               );
             }
             if (filt === "hosp_tipoquarto") {
               filteredClients = clients.data.filter((c) =>
-                c.hosp_tipoquarto.match(searchRegex)
+                String(c.hosp_tipoquarto)
+                  .trim()
+                  .toUpperCase()
+                  .match(searchRegex)
               );
             }
             if (filt === "hosp_categoriaquarto") {
               filteredClients = clients.data.filter((c) =>
-                c.hosp_categoriaquarto.match(searchRegex)
+                String(c.hosp_categoriaquarto)
+                  .trim()
+                  .toUpperCase()
+                  .match(searchRegex)
               );
             }
             if (filt === "hosp_nomepousada") {
               filteredClients = clients.data.filter((c) =>
-                String(c.hosp_nomepousada).match(searchRegex)
+                String(c.hosp_nomepousada)
+                  .trim()
+                  .toUpperCase()
+                  .match(searchRegex)
               );
             }
             if (filt === "hosp_categoriapacote") {
               filteredClients = clients.data.filter((c) =>
-                String(c.hosp_categoriapacote).match(searchRegex)
+                String(c.hosp_categoriapacote)
+                  .trim()
+                  .toUpperCase()
+                  .match(searchRegex)
               );
             }
             if (filt === "hosp_categoriapacote") {
               filteredClients = clients.data.filter((c) =>
-                c.hosp_categoriapacote.match(searchRegex)
+                String(c.hosp_categoriapacote)
+                  .trim()
+                  .toUpperCase()
+                  .match(searchRegex)
               );
             }
           } else {
@@ -401,6 +674,16 @@
             const tr = $("<tr></tr>")
               .addClass("text-center ")
               .css("vertical-align", "middle");
+
+            // Ações
+            tr.append(
+              $("<th></th>").append(
+                $("<i></i>")
+                  .addClass("bi bi-gear")
+                  .css("cursor", "pointer")
+                  .click(() => {})
+              )
+            );
 
             // Quantidade de vagas
             tr.append(createTextInTh(client.hosp_qtdevagas));
@@ -447,15 +730,6 @@
             // Status
             tr.append(createTextInTh(client.hosp_statuscontratopousada));
 
-            tr.append(
-              $("<th></th>").append(
-                $("<i></i>")
-                  .addClass("bi bi-gear")
-                  .css("cursor", "pointer")
-                  .click(() => {})
-              )
-            );
-
             // Adicionando tudo
             $("#table tbody").append(tr);
           });
@@ -466,8 +740,7 @@
 
         addClientsToTheTable();
 
-        const uploadButton = $("#uploadButton");
-        const tableButton = $("#tableButton");
+        /** Mudanças da função **/
         uploadButton.click(() => {
           hideAllFunc();
           const func = document.querySelectorAll(".func")[1];
@@ -479,6 +752,193 @@
           const func = document.querySelectorAll(".func")[0];
           func.classList.remove("d-none");
           func.classList.add("d-md-flex");
+        });
+        newButton.click(() => {
+          hideAllFunc();
+          const func = document.querySelectorAll(".func")[2];
+          func.classList.remove("d-none");
+        });
+
+        /** Preenchimento automatico **/
+        const configNewForm = () => {
+          // Adiconando as pousadas e as categorias de pacote
+          let todasPousadas = [];
+          let todosPacotes = [];
+          clients.data.forEach((c) => {
+            todasPousadas.push(c.hosp_nomepousada);
+            todosPacotes.push(c.hosp_categoriapacote);
+          });
+          todasPousadas = todasPousadas.filter(
+            (valor, indice) => todasPousadas.indexOf(valor) === indice
+          );
+          document
+            .querySelectorAll("#nomePousada option")
+            .forEach((el) => el.remove());
+          document
+            .querySelectorAll("#categoriaPacote option")
+            .forEach((el) => el.remove());
+          todasPousadas.forEach((p) =>
+            nomePousada.append($("<option></option>").text(p).val(p))
+          );
+          todosPacotes = todosPacotes.filter(
+            (v, i) => todosPacotes.indexOf(v) === i
+          );
+          todosPacotes.forEach((p) =>
+            categoriaPacote.append($("<option></option>").text(p).val(p))
+          );
+        };
+
+        hospVagasCheck.click((e) => {
+          if (e.target.checked) {
+            hospVagas.val(
+              clients.data[clients.data.length - 1].hosp_qtdevagas + 1
+            );
+            hospVagas.prop("disabled", true);
+          } else {
+            hospVagas.val("");
+            hospVagas.prop("disabled", false);
+          }
+        });
+
+        // Adicionar uma nova pousada
+        nomePousadaCheck.click((e) => {
+          if (e.target.checked) {
+            novaPousada.removeClass("d-none");
+            nomePousada.addClass("d-none");
+          } else {
+            novaPousada.addClass("d-none");
+            nomePousada.removeClass("d-none");
+          }
+        });
+
+        // Adicionar automaticamente a quantidade de registro
+        quantidadeRegistroCheck.click((e) => {
+          if (e.target.checked) {
+            const maxRegister = clients.data.reduce((max, obj) =>
+              obj.geral_qtderegistros > max.geral_qtderegistros ? obj : max
+            );
+            quantidadeRegistro.val(maxRegister.geral_qtderegistros + 1);
+            quantidadeRegistro.prop("disabled", true);
+          } else {
+            quantidadeRegistro.val("");
+            quantidadeRegistro.prop("disabled", false);
+          }
+        });
+
+        // Adicionando automaticamente o id do sistema
+        idSistemaCheck.click((e) => {
+          if (e.target.checked) {
+            const maxId = clients.data.reduce((max, obj) =>
+              obj.geral_idsistema > max.geral_idsistema ? obj : max
+            );
+            idSistema.val(maxId.geral_idsistema + 1);
+            idSistema.prop("disabled", true);
+          } else {
+            idSistema.val("");
+            idSistema.prop("disabled", false);
+          }
+        });
+
+        // Adiciona automaticamente o numero de reserva
+        numeroReservaCheck.click((e) => {
+          if (e.target.checked) {
+            const maxReserv = clients.data.reduce((max, obj) =>
+              obj.hosp_numeroreserva > max.hosp_numeroreserva ? obj : max
+            );
+            numeroReserva.val(parseInt(maxReserv.hosp_numeroreserva) + 1);
+            numeroReserva.prop("disabled", true);
+          } else {
+            numeroReserva.val("");
+            numeroReserva.prop("disabled", false);
+          }
+        });
+
+        // Criar um novo numero de registro
+        geralRegistroCheck.click((e) => {
+          if (e.target.checked) {
+            const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            let sequencia = "";
+            for (let i = 0; i < 8; i++) {
+              sequencia += caracteres.charAt(
+                Math.floor(Math.random() * caracteres.length)
+              );
+            }
+            geralRegistro.val(sequencia);
+            geralRegistro.prop("disabled", true);
+            titularCompra.disabled = true;
+            titularCompra.value = nomeHosp.val();
+          } else {
+            geralRegistro.val("");
+            geralRegistro.prop("disabled", false);
+            titularCompra.value = "";
+            titularCompra.disabled = false;
+          }
+        });
+
+        // Quando chegar no tamanho e no formato de um registro adicionar o nome do titular correspondente
+        geralRegistro.on("input", (e) => {
+          if (e.target.value.length === 8) {
+            const titular = clients.data.filter(
+              (n) => n.geral_numeroregistro == geralRegistro.val()
+            );
+            if (titular) {
+              titularCompra.value = titular[0].geral_titularidadecompra;
+            }
+          }
+        });
+
+        // Nome de titular igual ao nome caso for um novo numero de registro
+        nomeHosp.on("input", () => {
+          if (geralRegistroCheck.prop("checked") === true) {
+            titularCompra.value = nomeHosp.val();
+          }
+        });
+
+        configNewForm();
+
+        /** Novo **/
+        const newForm = document.getElementById("newForm");
+        const create = $("#create");
+
+        create.click(async () => {
+          document
+            .querySelectorAll("#newForm input")
+            .forEach((i) => (i.disabled = false));
+          document
+            .querySelectorAll("#newForm select")
+            .forEach((s) => (s.disabled = false));
+          const formData = new FormData(newForm);
+          const maxVagas = clients.data.reduce((max, obj) =>
+            obj.hosp_qtdevaga > max.hosp_qtdevaga ? obj : max
+          );
+          formData.set("hosp_qtdevaga", parseInt(maxVagas.hosp_qtdevaga) + 1);
+          formData.set("hosp_dataentrada", 1683244800000);
+          formData.set("hosp_datasaida", 1683417600000);
+          formData.set("hosp_qtdediaria", 2);
+          if (nomePousadaCheck.prop("checked")) {
+            formData.set("hosp_nomepousada", novaPousada.val());
+          }
+          const client = await fetch(
+            `/clients?username=${user}&password=${pass}`,
+            {
+              method: "POST",
+              body: formData,
+            }
+          ).then((j) => j.json());
+          hideAllFunc();
+          const func = document.querySelectorAll(".func")[0];
+          func.classList.remove("d-none");
+          func.classList.add("d-md-flex");
+          alert(client.msg);
+          clients = await refreshClients();
+          addClientsToTheTable(
+            "hosp_qtdevagas",
+            clients.data[clients.data.length - 1].hosp_qtdevagas
+          );
+          newForm.reset();
+          configNewForm();
+          nomePousada.removeClass("d-none");
+          novaPousada.addClass("d-none");
         });
       });
     </script>
