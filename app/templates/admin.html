@@ -211,7 +211,7 @@
               </form>
             </div>
             <div class="col-11 d-none h-100 func" style="height: 800px">
-              <h1 class="text-center text-primary">Novo</h1>
+              <h1 class="text-center text-primary" id="title">Novo</h1>
               <hr />
               <form class="col-md-11 col-12 container" id="newForm">
                 <div class="d-md-flex col-12 justify-content-around mb-3">
@@ -343,7 +343,7 @@
                       name="hosp_categoriaquarto"
                       id="categoriaQuarto"
                     >
-                      <option value="STANDART">STANDART</option>
+                      <option value="STANDARD">STANDARD</option>
                       <option value="Share">Share</option>
                     </select>
                   </div>
@@ -400,14 +400,27 @@
                     <select
                       class="form-select"
                       name="hosp_statuscontratopousada"
+                      id="contratoPousada"
                     >
                       <option>GARANTIDO</option>
                       <option>EXTRA</option>
                     </select>
                   </div>
                 </div>
-                <div class="form-group">
-                  <div class="input-group">
+                <div class="form-group col-12">
+                  <div class="input-group justify-content-around">
+                    <input
+                      class="btn btn-danger btn-block col-6 d-none"
+                      id="delete"
+                      value="Deletar"
+                      type="button"
+                    />
+                    <input
+                      class="btn btn-info btn-block col-6 d-none"
+                      value="Modificar"
+                      type="button"
+                      id="update"
+                    />
                     <input
                       class="btn btn-primary btn-block col-12"
                       id="create"
@@ -422,16 +435,8 @@
         </div>
       </div>
     </div>
-    <script
-      src="https://code.jquery.com/jquery-3.6.4.min.js"
-      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
-      integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
-      crossorigin="anonymous"
-    ></script>
+    <script src="/static/JQuery/jquery.min.js"></script>
+    <script src="/static/Boostrap/bootstrap.min.js"></script>
     <script>
       $(document).ready(async () => {
         const username = $("#username");
@@ -464,6 +469,11 @@
         const nomePousadaCheck = $("#nomePousadaCheck");
         const hospVagasCheck = $("#hospVagasCheck");
         const hospVagas = $("#hospVagas");
+        const newForm = document.getElementById("newForm");
+        const create = $("#create");
+        const deleteButton = $("#delete");
+        const updateButton = $("#update");
+        const categoriaQuarto = $("#categoriaQuarto");
 
         let user;
         let pass;
@@ -517,12 +527,6 @@
         const refreshClients = async () => {
           return await fetch("/clients").then((t) => t.json());
         };
-        refresh.click(async () => {
-          clients = await refreshClients();
-          addClientsToTheTable();
-          filter.val("");
-          search.val("");
-        });
 
         // Filtro
         document.querySelectorAll("#table thead tr th").forEach((c, i) => {
@@ -679,9 +683,65 @@
             tr.append(
               $("<th></th>").append(
                 $("<i></i>")
-                  .addClass("bi bi-gear")
+                  .addClass("bi bi-gear actions")
                   .css("cursor", "pointer")
-                  .click(() => {})
+                  .click(async () => {
+                    const id = client.hosp_qtdevagas;
+                    deleteButton.removeClass("d-none");
+                    updateButton.removeClass("d-none");
+                    create.addClass("d-none");
+                    hideAllFunc();
+                    newForm.reset();
+                    configNewForm();
+                    const func = document.querySelectorAll(".func")[2];
+                    func.classList.remove("d-none");
+                    const res = await fetch(
+                      `/clients?hosp_qtdevagas=${id}`
+                    ).then((j) => j.json());
+                    const newClient = res.data[0];
+                    $("#title").text("Modificar");
+
+                    nomeHosp.val(String(newClient.hosp_nomehospede).trim());
+                    hospVagas.val(String(newClient.hosp_qtdevagas).trim());
+                    quantidadeRegistro.val(
+                      String(newClient.geral_qtderegistros).trim()
+                    );
+                    idSistema.val(String(newClient.geral_idsistema).trim());
+                    numeroReserva.val(
+                      String(newClient.hosp_numeroreserva).trim()
+                    );
+                    titularCompra.value = String(
+                      newClient.geral_titularidadecompra
+                    ).trim();
+                    geralRegistro.val(
+                      String(newClient.geral_numeroregistro).trim()
+                    );
+                    categoriaQuarto.val(
+                      String(newClient.hosp_categoriaquarto).trim()
+                    );
+                    $("#tipoQuarto").val(
+                      String(newClient.hosp_tipoquarto).trim()
+                    );
+                    nomePousada.val(String(newClient.hosp_nomepousada).trim());
+                    categoriaPacote.val(
+                      String(newClient.hosp_categoriapacote).trim()
+                    );
+                    $("contratoPousada").val(
+                      String(newClient.hosp_statuscontratopousada).trim()
+                    );
+
+                    hospVagas.prop("disabled", true);
+                    idSistema.prop("disabled", true);
+                    quantidadeRegistro.prop("disabled", true);
+
+                    document
+                      .querySelectorAll("#newForm .form-check")
+                      .forEach((el) => el.classList.add("d-none"));
+                    document
+                      .querySelectorAll("#newForm small")
+                      .forEach((el) => el.classList.add("d-none"));
+                    deleteButton.removeClass("d-none");
+                  })
               )
             );
 
@@ -755,8 +815,22 @@
         });
         newButton.click(() => {
           hideAllFunc();
+          newForm.reset();
+          configNewForm();
           const func = document.querySelectorAll(".func")[2];
           func.classList.remove("d-none");
+          $("#title").text("Novo");
+          document
+            .querySelectorAll("#newForm .form-check")
+            .forEach((el) => el.classList.remove("d-none"));
+          document
+            .querySelectorAll("#newForm small")
+            .forEach((el) => el.classList.remove("d-none"));
+          deleteButton.addClass("d-none");
+          updateButton.addClass("d-none");
+          /** Novo **/
+          create.removeClass("d-none");
+          create.click(createNewClientHandler);
         });
 
         /** Preenchimento automatico **/
@@ -896,11 +970,8 @@
 
         configNewForm();
 
-        /** Novo **/
-        const newForm = document.getElementById("newForm");
-        const create = $("#create");
-
-        create.click(async () => {
+        /** HANDLERS **/
+        const createNewClientHandler = async () => {
           document
             .querySelectorAll("#newForm input")
             .forEach((i) => (i.disabled = false));
@@ -909,9 +980,9 @@
             .forEach((s) => (s.disabled = false));
           const formData = new FormData(newForm);
           const maxVagas = clients.data.reduce((max, obj) =>
-            obj.hosp_qtdevaga > max.hosp_qtdevaga ? obj : max
+            obj.hosp_qtdevagas > max.hosp_qtdevagas ? obj : max
           );
-          formData.set("hosp_qtdevaga", parseInt(maxVagas.hosp_qtdevaga) + 1);
+          formData.set("hosp_qtdevagas", parseInt(maxVagas.hosp_qtdevagas) + 1);
           formData.set("hosp_dataentrada", 1683244800000);
           formData.set("hosp_datasaida", 1683417600000);
           formData.set("hosp_qtdediaria", 2);
@@ -935,6 +1006,86 @@
             "hosp_qtdevagas",
             clients.data[clients.data.length - 1].hosp_qtdevagas
           );
+          newForm.reset();
+          configNewForm();
+          nomePousada.removeClass("d-none");
+          novaPousada.addClass("d-none");
+        };
+
+        const deleteClientHandler = async () => {
+          const modify = await fetch(
+            `/clients?username=${user}&password=${pass}&hosp_qtdevagas=${hospVagas.val()}`,
+            {
+              method: "DELETE",
+            }
+          ).then((j) => j.json());
+          if (modify.error) {
+            alert(modify.error);
+          } else {
+            alert(modify.msg);
+          }
+          hideAllFunc();
+          const func = document.querySelectorAll(".func")[0];
+          func.classList.remove("d-none");
+          func.classList.add("d-md-flex");
+          clients = await refreshClients();
+          addClientsToTheTable();
+          newForm.reset();
+          configNewForm();
+          nomePousada.removeClass("d-none");
+          novaPousada.addClass("d-none");
+        };
+
+        const updateClientHandler = async () => {
+          document
+            .querySelectorAll("#newForm input")
+            .forEach((i) => (i.disabled = false));
+          document
+            .querySelectorAll("#newForm select")
+            .forEach((s) => (s.disabled = false));
+          const formData = new FormData(newForm);
+          formData.set("hosp_qtdevagas", hospVagas.val());
+          formData.set("hosp_dataentrada", 1683244800000);
+          formData.set("hosp_datasaida", 1683417600000);
+          formData.set("hosp_qtdediaria", 2);
+          const modify = await fetch(
+            `/clients?username=${user}&password=${pass}&hosp_qtdevagas=${hospVagas.val()}`,
+            {
+              method: "PUT",
+              body: formData,
+            }
+          ).then((j) => j.json());
+          if (modify.error) {
+            alert(modify.error);
+          } else {
+            alert(modify.msg);
+          }
+          hideAllFunc();
+          const func = document.querySelectorAll(".func")[0];
+          func.classList.remove("d-none");
+          func.classList.add("d-md-flex");
+          clients = await refreshClients();
+          addClientsToTheTable("hosp_qtdevagas", hospVagas.val());
+          newForm.reset();
+          configNewForm();
+          nomePousada.removeClass("d-none");
+          novaPousada.addClass("d-none");
+        };
+
+        /** DELETE **/
+        deleteButton.click(deleteClientHandler);
+
+        /** UPDATE **/
+        updateButton.click(updateClientHandler);
+
+        /** GET **/
+        refresh.click(async () => {
+          hideAllFunc();
+          const func = document.querySelectorAll(".func")[0];
+          func.classList.remove("d-none");
+          func.classList.add("d-md-flex");
+          clients = await refreshClients();
+          addClientsToTheTable("hosp_qtdevagas", hospVagas.val());
           newForm.reset();
           configNewForm();
           nomePousada.removeClass("d-none");
