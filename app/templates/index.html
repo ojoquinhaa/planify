@@ -4,13 +4,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-    />
+    <link rel="stylesheet" href="/static/Boostrap/bootstrap.min.css" />
     <title>Consultar</title>
   </head>
-  <body>
+  <body style="background-image: url('/static/voucher-fundo.png')">
     <div class="container">
       <div className="card card-custom" style="background-color: #00000012">
         <div className="card-header d-none">
@@ -196,122 +193,8 @@
         </div>
       </div>
     </div>
-    <script type="module">
-      const consult = document.getElementById("consult");
-      const send = document.getElementById("send");
-      const hosp = document.getElementById("hosp");
-      const reserv = document.getElementById("reserv");
-      const id = document.getElementById("id");
-      const category = document.getElementById("category");
-      const pous = document.getElementById("pous");
-      const indate = document.getElementById("in");
-      const outdate = document.getElementById("out");
-      const query = document.getElementById("query");
-
-      function organizate(r, i, c, p) {
-        console.log(r);
-        reserv.value = r;
-        id.value = i;
-        category.value = c;
-        pous.value = p;
-      }
-
-      async function getSelect(data) {
-        const number = consult.value.toUpperCase().trim();
-        document.querySelectorAll("#query tr").forEach((el) => el.remove());
-        const table = [];
-        data.forEach((c) => {
-          if (String(c.geral_numeroregistro).trim().toUpperCase() === number) {
-            const option = document.createElement("option");
-            option.innerText = `${c.hosp_nomehospede} (${c.hosp_numeroreserva})`;
-            option.value = c.hosp_qtdevagas;
-            hosp.appendChild(option);
-          }
-        });
-      }
-      async function getTable(client) {
-        document.querySelectorAll("#query tr").forEach((el) => el.remove());
-        const search = await fetch(
-          "/clients?hosp_numeroreserva=" + client.hosp_numeroreserva
-        ).then((j) => j.json());
-        console.log(search);
-        const data = search.data;
-        data.forEach((c) => {
-          if (c.hosp_nomehospede == null) {
-            return;
-          }
-          const type = document.createElement("th");
-          const register = document.createElement("th");
-          const name = document.createElement("th");
-
-          type.innerText = c.hosp_tipoquarto;
-          register.innerText = c.geral_numeroregistro;
-          name.innerText = c.hosp_nomehospede;
-
-          const tr = document.createElement("tr");
-          tr.appendChild(type);
-          tr.appendChild(register);
-          tr.appendChild(name);
-
-          query.appendChild(tr);
-        });
-      }
-
-      hosp.addEventListener("change", async () => {
-        const id = hosp.value;
-        const dataframe = await fetch(`/clients?hosp_qtdevagas=${id}`).then(
-          (j) => j.json()
-        );
-        if (dataframe.length === 0) {
-          return;
-        }
-        const client = dataframe.data[0];
-        organizate(
-          client.hosp_numeroreserva,
-          client.geral_idsistema,
-          client.hosp_categoriapacote,
-          client.hosp_nomepousada
-        );
-        getTable(client);
-      });
-
-      send.addEventListener("click", async () => {
-        const number = consult.value;
-        const dataframe = await fetch(
-          `/clients?geral_numeroregistro=${number}`
-        ).then((j) => j.json());
-
-        const data = dataframe.data;
-
-        if (data.length === 0 || data.length > 100) {
-          return;
-        }
-
-        document.querySelectorAll("#hosp option").forEach((e) => e.remove());
-
-        const client = data[0];
-
-        organizate(
-          client.hosp_numeroreserva,
-          client.geral_idsistema,
-          client.hosp_categoriapacote,
-          client.hosp_nomepousada
-        );
-
-        getSelect(data);
-
-        getTable(client);
-      });
-    </script>
-    <script
-      src="https://code.jquery.com/jquery-3.6.4.min.js"
-      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
-      integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
-      crossorigin="anonymous"
-    ></script>
+    <script src="/static/JQuery/jquery.min.js"></script>
+    <script src="/static/js/index.js"></script>
+    <script src="/static/Boostrap/bootstrap.min.js"></script>
   </body>
 </html>
