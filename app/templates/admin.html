@@ -773,10 +773,22 @@
             tr.append(createTextInTh(client.hosp_categoriaquarto));
 
             // Data de entrada
-            tr.append(createTextInTh(client.hosp_dataentrada));
+            const inDate = new Date(parseInt(client.hosp_dataentrada)); // Pegando data de entrada
+            let inDays = inDate.getDay() + 1; // Dias
+            let inMonth = inDate.getMonth() + 1; // Mes
+            const inYear = inDate.getFullYear(); // Ano
+            if (inDays < 10) inDays = `0${inDays}`; // Formatando os dias
+            if (inMonth < 10) inMonth = `0${inMonth}`; // Formatando os meses
+            tr.append(createTextInTh(`${inDays}/${inMonth}/${inYear}`));
 
             // Data de saida
-            tr.append(createTextInTh(client.hosp_datasaida));
+            const outDate = new Date(parseInt(client.hosp_datasaida)); // Pegando data de entrada
+            let outDays = outDate.getDay() + 1; // Dias
+            let outMonth = outDate.getMonth() + 1; // Mes
+            const outYear = outDate.getFullYear(); // Ano
+            if (outDays < 10) outDays = `0${outDays}`; // Formatando os dias
+            if (outMonth < 10) outMonth = `0${outMonth}`; // Formatando os meses
+            tr.append(createTextInTh(`${outDays}/${outMonth}/${outYear}`));
 
             // Diárias
             tr.append(createTextInTh(client.hosp_qtdediaria));
